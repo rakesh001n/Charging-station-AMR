@@ -28,6 +28,7 @@ setup(
         'console_scripts': [
             'battery_node = battery_patrol_robot.battery_node:main',
             'patrol_node = battery_patrol_robot.patrol_node:main',
+            'navigation_node = battery_patrol_robot.navigation_node:main',
         ],
     },
     zip_safe=True,

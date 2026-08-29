@@ -22,6 +22,7 @@ class PatrolNode(Node):
         self.declare_parameter('charger_y', 0.0)
         self.declare_parameter('docking_distance', 0.30)
         self.declare_parameter('waypoint_tolerance', 0.15)
+        self.declare_parameter('max_linear_speed', 0.35)
         self.declare_parameter('obstacle_distance', 0.45)
 
         self.low_battery = float(self.get_parameter('low_battery_level').value)
@@ -32,6 +33,7 @@ class PatrolNode(Node):
         )
         self.docking_distance = float(self.get_parameter('docking_distance').value)
         self.tolerance = float(self.get_parameter('waypoint_tolerance').value)
+        self.max_linear_speed = float(self.get_parameter('max_linear_speed').value)
         self.obstacle_distance = float(self.get_parameter('obstacle_distance').value)
         self.waypoints = [
             (0.8, 0.0), (0.8, 0.8), (0.0, 0.8), (-0.8, 0.8),
@@ -140,7 +142,7 @@ class PatrolNode(Node):
         command = Twist()
         command.angular.z = max(-1.2, min(1.2, 2.0 * angle_error))
         if abs(angle_error) < 0.35:
-            command.linear.x = min(0.22, 0.45 * distance)
+            command.linear.x = min(self.max_linear_speed, 0.45 * distance)
             if self.front_distance < self.obstacle_distance + 0.25:
                 command.linear.x *= 0.35
         self.cmd_publisher.publish(command)
