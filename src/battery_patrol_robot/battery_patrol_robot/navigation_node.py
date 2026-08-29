@@ -150,11 +150,13 @@ class NavigationNode(Node):
                 'AVOIDING_OBSTACLE', 'NO_VALID_PATH'):
             self.state = 'RETURNING_TO_CHARGER'
             self.route = []
-            self.get_logger().info('Low battery %.1f%%: planning return to charger', self.level)
+            self.get_logger().info(
+                f'Low battery {self.level:.1f}%: planning return to charger')
         elif self.state == 'CHARGING' and self.level >= self.resume_battery:
             self.state = 'PATROLLING'
             self.route = []
-            self.get_logger().info('Battery %.1f%%: resuming patrol', self.level)
+            self.get_logger().info(
+                f'Battery {self.level:.1f}%: resuming patrol')
 
     def stop_callback(self, message):
         self.emergency_stop = message.data
@@ -252,7 +254,8 @@ class NavigationNode(Node):
             return
         self.avoid_turn_direction = None
         if not self.route or self.route_target != self.goal():
-            self.state = 'PLANNING_PATH'
+            if self.state != 'RETURNING_TO_CHARGER':
+                self.state = 'PLANNING_PATH'
             if not self.replan():
                 self.publish_state()
                 return

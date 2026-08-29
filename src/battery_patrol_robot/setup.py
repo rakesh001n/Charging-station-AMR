@@ -29,6 +29,7 @@ setup(
             'battery_node = battery_patrol_robot.battery_node:main',
             'patrol_node = battery_patrol_robot.patrol_node:main',
             'navigation_node = battery_patrol_robot.navigation_node:main',
+            'diagnostics_node = battery_patrol_robot.diagnostics_node:main',
         ],
     },
     zip_safe=True,

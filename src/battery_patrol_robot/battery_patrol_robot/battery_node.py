@@ -4,6 +4,7 @@ import math
 
 import rclpy
 from battery_interfaces.msg import BatteryState
+from battery_interfaces.srv import ResetBattery
 from geometry_msgs.msg import Twist
 from nav_msgs.msg import Odometry
 from rclpy.executors import ExternalShutdownException
@@ -41,7 +42,20 @@ class BatteryNode(Node):
         self.create_subscription(Bool, '/battery_charging_enable', self.charge_callback, 10)
         self.create_subscription(Twist, '/raw_cmd_vel', self.cmd_callback, 10)
         self.timer = self.create_timer(0.5, self.update)
+        self.create_service(ResetBattery, '/reset_battery', self.reset_battery)
         self.get_logger().info(f'Battery node started at {self.level:.1f}%')
+
+    def reset_battery(self, request, response):
+        if not 0.0 <= request.level <= 100.0:
+            response.success = False
+            response.message = 'Battery level must be between 0 and 100'
+            return response
+        self.level = float(request.level)
+        self.last_update = self.get_clock().now()
+        response.success = True
+        response.message = f'Battery reset to {self.level:.1f}%'
+        self.get_logger().info(response.message)
+        return response
 
     def charge_callback(self, message):
         self.charging_enabled = message.data

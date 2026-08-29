@@ -76,10 +76,12 @@ class PatrolNode(Node):
                 self.resume_state = 'RETURNING_TO_CHARGER'
             else:
                 self.state = 'RETURNING_TO_CHARGER'
-            self.get_logger().info('Battery low at %.1f%%, returning to charger', self.level)
+            self.get_logger().info(
+                f'Battery low at {self.level:.1f}%, returning to charger')
         elif self.state == 'CHARGING' and self.level >= self.resume_battery:
             self.state = 'PATROLLING'
-            self.get_logger().info('Battery recovered to %.1f%%, resuming patrol', self.level)
+            self.get_logger().info(
+                f'Battery recovered to {self.level:.1f}%, resuming patrol')
 
     def scan_callback(self, message):
         sectors = {'front': [], 'left': [], 'right': []}
