@@ -10,6 +10,6 @@ def generate_launch_description():
     package_share = get_package_share_directory('battery_patrol_robot')
     system = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(package_share, 'launch', 'day5_monitoring.launch.py')),
+            os.path.join(package_share, 'launch', 'monitoring.launch.py')),
     )
     return LaunchDescription([system])

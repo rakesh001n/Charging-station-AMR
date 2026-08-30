@@ -11,7 +11,7 @@ def generate_launch_description():
     package_share = get_package_share_directory('battery_patrol_robot')
     navigation = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(package_share, 'launch', 'day4_navigation.launch.py')),
+            os.path.join(package_share, 'launch', 'navigation.launch.py')),
     )
     diagnostics = Node(
         package='battery_patrol_robot',

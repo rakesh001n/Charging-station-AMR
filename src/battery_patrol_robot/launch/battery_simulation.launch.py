@@ -10,7 +10,7 @@ from launch_ros.actions import Node
 def generate_launch_description():
     package_share = get_package_share_directory('battery_patrol_robot')
     day1 = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(os.path.join(package_share, 'launch', 'day1_sim.launch.py')),
+        PythonLaunchDescriptionSource(os.path.join(package_share, 'launch', 'simulation.launch.py')),
         launch_arguments={
             'teleop': 'true',
             'rviz': 'true',
