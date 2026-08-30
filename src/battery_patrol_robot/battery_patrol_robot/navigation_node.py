@@ -11,6 +11,7 @@ from rclpy.executors import ExternalShutdownException
 from rclpy.node import Node
 from sensor_msgs.msg import LaserScan
 from std_msgs.msg import Bool
+from std_srvs.srv import Trigger
 
 
 class NavigationNode(Node):
@@ -48,6 +49,7 @@ class NavigationNode(Node):
         self.level = 100.0
         self.docked = False
         self.emergency_stop = False
+        self.paused = False
         self.state = 'PLANNING_PATH'
         self.resume_state = 'PATROLLING'
         self.waypoint_index = 0
@@ -66,6 +68,8 @@ class NavigationNode(Node):
         self.create_subscription(BatteryState, '/battery_state', self.battery_callback, 10)
         self.create_subscription(LaserScan, '/scan', self.scan_callback, 10)
         self.create_subscription(Bool, '/emergency_stop', self.stop_callback, 10)
+        self.create_service(Trigger, '/pause_mission', self.pause_callback)
+        self.create_service(Trigger, '/resume_mission', self.resume_callback)
         self.timer = self.create_timer(0.1, self.control_loop)
         self.get_logger().info('Navigation node started with A* planning')
 
@@ -167,6 +171,26 @@ class NavigationNode(Node):
             self.state = 'PATROLLING'
             self.route = []
 
+    def pause_callback(self, request, response):
+        self.paused = True
+        self.state = 'PAUSED'
+        self.publish_stop()
+        response.success = True
+        response.message = 'Mission paused'
+        return response
+
+    def resume_callback(self, request, response):
+        if self.emergency_stop:
+            response.success = False
+            response.message = 'Cannot resume while emergency stop is active'
+            return response
+        self.paused = False
+        self.state = 'RETURNING_TO_CHARGER' if self.level <= self.low_battery else 'PLANNING_PATH'
+        self.route = []
+        response.success = True
+        response.message = 'Mission resumed'
+        return response
+
     def scan_callback(self, message):
         sectors = {'front': [], 'left': [], 'right': []}
         for index, distance in enumerate(message.ranges):
@@ -216,7 +240,7 @@ class NavigationNode(Node):
         return False
 
     def control_loop(self):
-        if self.x is None or self.yaw is None or self.emergency_stop:
+        if self.x is None or self.yaw is None or self.emergency_stop or self.paused:
             self.publish_stop()
             self.publish_state()
             return
