@@ -5,6 +5,45 @@ mobile robot based on the TurtleBot3 Burger. The robot patrols a Gazebo world,
 avoids obstacles, returns to a visible yellow charging pad when its battery is
 low, and resumes its mission after charging.
 
+## Clone And Reproduce
+
+On another Ubuntu system with ROS 2 Humble installed, clone the repository:
+
+```bash
+git clone https://github.com/rakesh001n/Charging-station-AMR.git
+cd Charging-station-AMR
+```
+
+Install the required ROS 2 dependencies:
+
+```bash
+sudo apt update
+sudo apt install ros-humble-gazebo-ros-pkgs \
+  ros-humble-robot-state-publisher ros-humble-rviz2 ros-humble-xacro \
+  ros-humble-teleop-twist-keyboard ros-humble-nav-msgs \
+  ros-humble-sensor-msgs ros-humble-diagnostic-msgs ros-humble-std-srvs
+```
+
+Build and source the workspace:
+
+```bash
+source /opt/ros/humble/setup.bash
+colcon build --symlink-install
+source install/setup.bash
+```
+
+Run the complete system:
+
+```bash
+ros2 launch battery_patrol_robot final_system.launch.py
+```
+
+For a headless test:
+
+```bash
+ros2 launch battery_patrol_robot final_system.launch.py gazebo_gui:=false rviz:=false
+```
+
 ## What Was Implemented
 
 - Gazebo TurtleBot3 simulation with local robot resources.
