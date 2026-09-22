@@ -19,8 +19,8 @@ class BatteryNode(Node):
         self.declare_parameter('distance_drain_per_meter', 2.0)
         self.declare_parameter('idle_drain_per_second', 0.03)
         self.declare_parameter('charge_rate_per_second', 12.0)
-        self.declare_parameter('charger_x', 0.0)
-        self.declare_parameter('charger_y', 0.0)
+        self.declare_parameter('charger_x', -3.2)
+        self.declare_parameter('charger_y', -2.55)
         self.declare_parameter('docking_distance', 0.30)
         self.declare_parameter('charging_enabled', True)
 

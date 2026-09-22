@@ -1,7 +1,7 @@
 # Charging Station AMR
 
 This project is a ROS 2 Humble simulation of a battery-aware autonomous
-mobile robot based on the TurtleBot3 Burger. The robot patrols a Gazebo world,
+mobile robot based on the TurtleBot3 Burger. The robot works inside a Gazebo warehouse,
 avoids obstacles, returns to a visible yellow charging pad when its battery is
 low, and resumes its mission after charging.
 
@@ -48,7 +48,7 @@ ros2 launch battery_patrol_robot final_system.launch.py gazebo_gui:=false rviz:=
 
 - Gazebo TurtleBot3 simulation with local robot resources.
 - Blue TurtleBot3 chassis, orange lidar, and black wheels.
-- Yellow visual charging pad at `(0, 0)`.
+- Yellow visual charging pad at `(-3.2, -2.55)`.
 - Battery drain from travelled distance and idle time.
 - Automatic charging inside the docking radius.
 - Zero-battery command lock.
@@ -62,6 +62,13 @@ ros2 launch battery_patrol_robot final_system.launch.py gazebo_gui:=false rviz:=
 - Battery reset service for testing.
 - Diagnostics and mission telemetry.
 - RViz robot, laser scan, TF, and planned-path visualization.
+
+The current world is a warehouse layout with perimeter walls, four storage
+rack rows, aisles, a loading zone, and a dedicated yellow charging bay at
+`(-3.2, -2.55)`. The warehouse has no pallet obstacles blocking the robot's
+routes. The warehouse-compatible A* obstacle model and patrol waypoints were
+updated to match this layout. The autonomous speed is `0.42 m/s`; battery
+drain, charging thresholds, and safety behavior remain unchanged.
 
 ## Progress By Day
 

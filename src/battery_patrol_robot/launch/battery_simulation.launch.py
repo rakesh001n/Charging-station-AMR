@@ -24,8 +24,8 @@ def generate_launch_description():
         parameters=[{
             'use_sim_time': True,
             'charging_enabled': True,
-            'charger_x': 0.0,
-            'charger_y': 0.0,
+            'charger_x': -3.2,
+            'charger_y': -2.55,
             'docking_distance': 0.30,
         }],
         output='screen',

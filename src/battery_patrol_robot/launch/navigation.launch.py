@@ -22,7 +22,12 @@ def generate_launch_description():
         package='battery_patrol_robot',
         executable='battery_node',
         name='battery_node',
-        parameters=[{'use_sim_time': True, 'charging_enabled': True}],
+        parameters=[{
+            'use_sim_time': True,
+            'charging_enabled': True,
+            'charger_x': -3.2,
+            'charger_y': -2.55,
+        }],
         output='screen',
     )
     navigation = Node(
@@ -33,7 +38,10 @@ def generate_launch_description():
             'use_sim_time': True,
             'obstacle_inflation': 0.25,
             'waypoint_tolerance': 0.08,
-            'max_linear_speed': 0.35,
+            'max_linear_speed': 0.42,
+            'lookahead_distance': 0.30,
+            'charger_x': -3.2,
+            'charger_y': -2.55,
         }],
         output='screen',
     )

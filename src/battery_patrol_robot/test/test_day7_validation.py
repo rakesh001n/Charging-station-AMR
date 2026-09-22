@@ -9,14 +9,14 @@ class NavigationPlannerTest(unittest.TestCase):
     def setUp(self):
         self.node = NavigationNode.__new__(NavigationNode)
         self.node.resolution = 0.10
-        self.node.bounds = (-2.4, 2.4, -2.4, 2.4)
+        self.node.bounds = (-3.8, 3.8, -3.2, 3.2)
         self.node.obstacle_inflation = 0.25
 
-    def test_blue_obstacle_is_not_a_valid_goal(self):
-        self.assertEqual(self.node.plan((0.8, 0.0), (0.8, 0.8)), [])
+    def test_rack_is_not_a_valid_goal(self):
+        self.assertEqual(self.node.plan((0.0, 2.5), (-1.5, 1.55)), [])
 
     def test_planner_finds_route_around_blue_obstacle(self):
-        route = self.node.plan((0.8, 0.0), (0.0, 0.8))
+        route = self.node.plan((0.0, 2.5), (2.8, 2.5))
         self.assertTrue(route)
         self.assertTrue(all(not self.node.blocked(point) for point in route))
 
